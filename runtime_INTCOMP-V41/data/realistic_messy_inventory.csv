@@ -1,0 +1,19 @@
+asset_id,name,algorithm,key_size,protocol,criticality,internet_exposed,data_lifetime_years,dependencies,migration_status,aliases
+PAY-API-01,Payment API (prod),RSA,2048,TLS 1.2,critical,true,7,ID-svc-01;CertInfra,not_started,pay-api;payments
+id-svc-01,Identity Service,ECDSA,256,tls 1.3,CRITICAL,TRUE,10,cert-infra-01,planned,identity;ID Service
+cert-infra-01,Certificate Infrastructure,RSA,2048,TLS 1.2,critical,false,15,,not_started,certs;PKI
+LegacyBilling,Legacy Billing System,3DES,168,TLS 1.0,high,false,10,PAY-API-01,not_started,
+partner_gw_01,Partner Integration Gateway,RSA,1024,TLS 1.0,High,yes,5,id-svc-01,in_progress,partner-gateway
+HR Portal,Internal HR Portal,AES,256,TLS 1.3,medium,false,8,id-svc-01,not_started,
+notif-svc,Notification Service,AES,128,TLS 1.2,low,true,2,id-svc-01,migrated,
+analytics_store,Analytics Data Store,SHA-1,0,TLS 1.1,medium,FALSE,3,,not_started,analytics
+MOBILE-AUTH,Mobile App Auth,ECDH,256,TLS 1.3,high,true,5,id-svc-01,Planned,mobile-auth
+vpn-gw-01,Corporate VPN Gateway,DH,2048,IPsec,high,true,6,cert-infra-01,not_started,
+archive_cold,Cold Archive Storage,AES,256,TLS 1.2,low,false,20,,not_started,
+cycle_a,Cycle Alpha Service,RSA,2048,TLS 1.2,medium,false,5,cycle_b,not_started,
+cycle_b,Cycle Beta Service,RSA,2048,TLS 1.2,medium,false,5,cycle_a,not_started,
+secure_tool,Secure Internal Tool,AES,256,TLS 1.3,low,false,2,,not_started,secure-internal
+DUP-NAME-A,Shared Service Name,RSA,2048,TLS 1.2,medium,false,4,,not_started,
+DUP-NAME-B,Shared Service Name,AES,256,TLS 1.3,low,false,3,,not_started,
+ghost-ref-01,Service With Ghost Dep,RSA,2048,TLS 1.2,high,true,6,does-not-exist-99,not_started,
+weird id 01,Weird Spacing Asset,RSA,2048,TLS 1.2,medium,false,5,,not_started,

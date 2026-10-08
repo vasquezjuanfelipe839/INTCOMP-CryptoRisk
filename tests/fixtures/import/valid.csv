@@ -1,0 +1,11 @@
+asset_id,name,algorithm,key_size,protocol,criticality,internet_exposed,data_lifetime_years,dependencies,migration_status
+NEXUS-PKI-ROOT,Nexus Root CA,RSA,4096,TLS 1.2,critical,false,25,,not_started
+NEXUS-HSM-01,Nexus HSM,AES,256,PKCS11,critical,false,20,NEXUS-PKI-ROOT,not_started
+NEXUS-IDENTITY,Identity Core,ECDSA,256,TLS 1.3,critical,false,15,NEXUS-HSM-01,not_started
+NEXUS-SSO,SSO Broker,ECDSA,256,TLS 1.3,high,true,12,NEXUS-IDENTITY,not_started
+NEXUS-API-GW,API Gateway,RSA,2048,TLS 1.2,high,true,10,NEXUS-SSO,not_started
+NEXUS-PAYMENT,Payment API,RSA,2048,TLS 1.2,critical,true,15,NEXUS-API-GW;NEXUS-HSM-01,not_started
+NEXUS-DB,Payment DB,AES,256,TLS 1.2,critical,false,20,NEXUS-PAYMENT,not_started
+NEXUS-CRM,CRM,AES,256,TLS 1.2,medium,false,7,NEXUS-IDENTITY,not_started
+NEXUS-LEGACY-FTP,Legacy FTP,RSA,1024,FTP,high,true,5,,not_started
+NEXUS-PORTAL,Customer Portal,RSA,2048,TLS 1.3,high,true,10,NEXUS-SSO;NEXUS-PAYMENT,not_started

@@ -1,0 +1,9 @@
+asset_id,name,algorithm,key_size,protocol,criticality,internet_exposed,data_lifetime_years,dependencies,migration_status
+TEST-B-OMEGA,Asset B 1,ECDSA,2048,TLS 1.3,critical,true,5,,not_started
+TEST-B-SATURN,Asset B 2,ECDSA,2048,TLS 1.3,critical,true,5,TEST-B-OMEGA,not_started
+TEST-B-NOVA,Asset B 3,ECDSA,2048,TLS 1.3,high,true,5,TEST-B-OMEGA,not_started
+TEST-B-ORBIT,Asset B 4,ECDSA,2048,TLS 1.3,medium,true,5,TEST-B-OMEGA,not_started
+TEST-B-ZENITH,Asset B 5,ECDSA,2048,TLS 1.3,low,true,5,TEST-B-OMEGA,not_started
+TEST-B-PULSE,Asset B 6,ECDSA,2048,TLS 1.3,high,true,5,TEST-B-OMEGA,not_started
+TEST-B-QUASAR,Asset B 7,ECDSA,2048,TLS 1.3,medium,true,5,TEST-B-OMEGA,not_started
+TEST-B-COMET,Asset B 8,ECDSA,2048,TLS 1.3,low,true,5,TEST-B-OMEGA,not_started

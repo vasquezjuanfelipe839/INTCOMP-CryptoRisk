@@ -1,0 +1,13 @@
+asset_id,name,algorithm,key_size,protocol,criticality,internet_exposed,data_lifetime_years,dependencies,migration_status
+TEST-C-01,Asset C 1,AES,2048,TLS 1.3,high,false,5,,not_started
+TEST-C-02,Asset C 2,AES,2048,TLS 1.3,medium,false,5,TEST-C-01,not_started
+TEST-C-03,Asset C 3,AES,2048,TLS 1.3,low,false,5,TEST-C-01,not_started
+TEST-C-04,Asset C 4,AES,2048,TLS 1.3,critical,false,5,TEST-C-01,not_started
+TEST-C-05,Asset C 5,AES,2048,TLS 1.3,high,false,5,TEST-C-01,not_started
+TEST-C-06,Asset C 6,AES,2048,TLS 1.3,medium,false,5,TEST-C-01,not_started
+TEST-C-07,Asset C 7,AES,2048,TLS 1.3,low,false,5,TEST-C-01,not_started
+TEST-C-08,Asset C 8,AES,2048,TLS 1.3,critical,false,5,TEST-C-01,not_started
+TEST-C-09,Asset C 9,AES,2048,TLS 1.3,high,false,5,TEST-C-01,not_started
+TEST-C-10,Asset C 10,AES,2048,TLS 1.3,medium,false,5,TEST-C-01,not_started
+TEST-C-11,Asset C 11,AES,2048,TLS 1.3,low,false,5,TEST-C-01,not_started
+TEST-C-12,Asset C 12,AES,2048,TLS 1.3,critical,false,5,TEST-C-01,not_started

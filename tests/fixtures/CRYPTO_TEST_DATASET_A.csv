@@ -1,0 +1,6 @@
+asset_id,name,algorithm,key_size,protocol,criticality,internet_exposed,data_lifetime_years,dependencies,migration_status
+TEST-A-ALPHA,Asset A 1,RSA,2048,TLS 1.3,critical,false,5,,not_started
+TEST-A-BETA,Asset A 2,RSA,2048,TLS 1.3,high,false,5,TEST-A-ALPHA,not_started
+TEST-A-GAMMA,Asset A 3,RSA,2048,TLS 1.3,medium,false,5,TEST-A-ALPHA,not_started
+TEST-A-DELTA,Asset A 4,RSA,2048,TLS 1.3,low,false,5,TEST-A-ALPHA,not_started
+TEST-A-EPSILON,Asset A 5,RSA,2048,TLS 1.3,high,false,5,TEST-A-ALPHA,not_started

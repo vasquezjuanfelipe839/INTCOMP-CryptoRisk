@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title data-i18n="app.title">INTCOMP CryptoRisk</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">IC</div>
+        <div>
+          <div class="brand-title">CryptoRisk</div>
+          <div class="brand-sub" data-i18n="brand.sub">Purple · Black · Core decides</div>
+        </div>
+      </div>
+      <nav class="nav">
+        <button class="nav-btn active" data-view="overview" data-i18n="nav.overview" data-i18n-title="nav.overview.tip">Resumen</button>
+        <button class="nav-btn" data-view="inventory" data-i18n="nav.inventory" data-i18n-title="nav.inventory.tip">Inventario</button>
+        <button class="nav-btn" data-view="risk" data-i18n="nav.risk" data-i18n-title="nav.risk.tip">Riesgo</button>
+        <button class="nav-btn" data-view="dependencies" data-i18n="nav.dependencies" data-i18n-title="nav.dependencies.tip">Dependencias</button>
+        <button class="nav-btn" data-view="decision" data-i18n="nav.decision" data-i18n-title="nav.decision.tip">Decisión</button>
+        <button class="nav-btn" data-view="audit" data-i18n="nav.audit" data-i18n-title="nav.audit.tip">Auditoría</button>
+      </nav>
+      <div class="sidebar-actions">
+        <button type="button" class="btn ghost full" id="btn-tutorial" data-i18n="btn.tutorial">How to use CryptoRisk</button>
+      </div>
+      <div class="sidebar-foot">
+        <div class="auth-line"><span>CORE</span><strong>DECIDES</strong></div>
+        <div class="auth-line"><span>EVALUATOR</span><strong>SCORES</strong></div>
+        <div class="auth-line"><span>AI</span><strong>EXPLAINS</strong></div>
+        <div class="auth-line"><span>AUDIT</span><strong>PROVES</strong></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1 id="page-title">Resumen</h1>
+          <p id="page-sub" class="muted"><span data-i18n="empty.lead">Analiza el riesgo criptográfico de tu infraestructura.</span></p>
+        </div>
+        <div class="topbar-right">
+          <div class="lang-switch" role="group" aria-label="Language">
+            <button type="button" class="lang-btn" data-lang="es" title="Español">🇪🇸 ES</button>
+            <button type="button" class="lang-btn" data-lang="en" title="English">🇺🇸 EN</button>
+          </div>
+          <button type="button" class="btn ghost" id="btn-tutorial-top" data-i18n="btn.quickstart">Quick start</button>
+          <div class="topbar-status" id="topbar-status" data-i18n="loading">Loading…</div>
+        </div>
+      </header>
+
+      <div id="welcome-banner" class="welcome-banner">
+        <div>
+          <strong data-i18n="welcome.title">Welcome to CryptoRisk</strong>
+          <p class="muted"><span data-i18n="welcome.body">Understand your cryptographic environment.</span></p>
+          <p class="flow-line"><span data-i18n="welcome.flow">Inventory → …</span></p>
+          <ol class="welcome-steps">
+            <li data-i18n="welcome.s1">Sube tu inventario (CSV u otros formatos)</li>
+            <li data-i18n="welcome.s2">Revisa Riesgo y Dependencias</li>
+            <li data-i18n="welcome.s3">Ejecuta Decisión (stress test)</li>
+            <li data-i18n="welcome.s4">Consulta Auditoría, Informe ejecutivo y explicación IA</li>
+          </ol>
+          <div class="cta-row">
+            <label class="btn primary file-btn"><span data-i18n="btn.upload">Upload inventory</span><input type="file" id="welcome-upload" accept=".csv,.xlsx,.xls,.docx,.pdf,.txt,text/csv,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" hidden /></label>
+            <button type="button" class="btn secondary" id="welcome-demo" data-i18n="btn.demo">Use Demo Dataset</button>
+            <button type="button" class="btn ghost" id="welcome-howto" data-i18n="btn.howto">How it works</button>
+          </div>
+        </div>
+        <button type="button" class="btn secondary" id="welcome-dismiss" data-i18n="btn.gotit">Got it</button>
+      </div>
+
+      <!-- OVERVIEW -->
+      <section id="view-overview" class="view active">
+        <div class="section-help">
+          <strong data-i18n="page.overview">Resumen</strong> — <span data-i18n="page.overview.sub">Vista general de lo que encontramos en tu infraestructura.</span>
+          <button type="button" class="help-btn" data-help="overview" data-i18n="btn.whatsthis">¿Qué es esto?</button>
+        </div>
+        <div class="panel" id="overview-controls">
+          <div class="cta-row">
+            <label class="btn primary file-btn"><span data-i18n="btn.upload">Upload inventory</span><input type="file" id="ov-upload" accept=".csv,.xlsx,.xls,.docx,.pdf,.txt,text/csv,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" hidden /></label>
+            <button class="btn secondary" id="ov-demo" data-i18n="btn.demo">Use Demo Dataset</button>
+            <button class="btn danger" id="ov-clear" data-i18n="btn.clear">Clear inventory</button>
+            <a class="btn ghost" href="/api/inventory/template.csv" data-i18n="btn.template">Download template</a>
+          </div>
+          <p class="msg" id="ov-upload-msg"></p>
+          <div id="import-review" class="panel hidden">
+            <h3>Import preview</h3>
+            <p id="import-review-meta" class="muted"></p>
+            <pre id="import-review-body" class="code-block"></pre>
+            <div class="cta-row">
+              <button type="button" class="btn primary" id="import-confirm" data-i18n="btn.confirm">Confirm &amp; analyze</button>
+              <button type="button" class="btn secondary" id="import-cancel" data-i18n="btn.cancel">Cancel</button>
+            </div>
+          </div>
+          <p class="hint" data-i18n="controls.hint">Formatos: CSV · XLSX · XLS · DOCX · PDF · TXT. Criticidad: low · medium · high · critical. Subir un archivo nuevo reemplaza el inventario activo.</p>
+        </div>
+        <div class="hero-card" id="overview-empty">
+          <div class="badge-warn" data-i18n="empty.badge">NO SE HA CARGADO INVENTARIO</div>
+          <h2 data-i18n="empty.title">CryptoRisk</h2>
+          <p class="lead" data-i18n="empty.lead">Analiza el riesgo criptográfico de tu infraestructura.</p>
+          <p class="muted"></p>
+          <div class="what-card">
+            <h3 data-i18n="empty.what.title">¿Qué hace CryptoRisk?</h3>
+            <p><span data-i18n="empty.what.body">…</span></p>
+            <p class="tagline"><strong><span data-i18n="empty.tagline">The Core computes…</span></strong></p>
+          </div>
+          <p class="muted">Usa <strong>Upload inventory</strong> arriba, <strong>How to use CryptoRisk</strong> en el menú, o prueba datos de demo. Ningún dataset se carga automáticamente.</p>
+        </div>
+        <div id="overview-loaded" class="hidden">
+          <div class="grid-2">
+            <div class="panel">
+              <h3>Dataset status</h3>
+              <dl class="kv">
+                <dt>State</dt><dd id="ov-source">—</dd>
+                <dt data-i18n="kpi.total">TOTAL DE ACTIVOS</dt><dd id="ov-total">0</dd>
+              </dl>
+              <div class="cta-row">
+                <button class="btn secondary" data-goto="inventory" data-i18n="goto.inventory">Abrir inventario</button>
+                <button class="btn secondary" data-goto="risk" data-i18n="goto.risk">Revisar riesgo</button>
+                <button class="btn primary" data-goto="decision" data-i18n="goto.decision">Ir a decisión</button>
+              </div>
+            </div>
+            <div class="panel">
+              <h3>System status</h3>
+              <dl class="kv">
+                <dt>Core authority</dt><dd>ABSOLUTE</dd>
+                <dt>AI authority</dt><dd>NONE</dd>
+                <dt data-i18n="label.provider">Proveedor</dt><dd id="ov-provider">—</dd>
+                <dt data-i18n="label.core_sha">SHA del paquete Core</dt><dd class="mono" id="ov-sha">—</dd>
+                <dt data-i18n="label.product">Producto</dt><dd>CryptoRisk V3 UX</dd>
+              </dl>
+            </div>
+          </div>
+          <div class="panel" id="analytics-panel">
+            <h3 data-i18n="analytics.title">ANALÍTICA CRYPTORISK</h3>
+            <p class="muted" data-i18n="charts.reflect">Las gráficas reflejan el inventario activo y los scores existentes del Core. No recalculan el riesgo.</p>
+            <p class="hint" data-i18n="charts.risk_vs_crit">Riesgo vs criticidad: la criticidad es importancia de negocio del CSV; el riesgo es el score heurístico del Core cuando está disponible — no son lo mismo.</p>
+            <div class="analytics-hero">
+              <h3 class="analytics-title" data-i18n="analytics.title">ANALÍTICA CRYPTORISK</h3>
+              <p class="muted"><span data-i18n="analytics.sub">Resumen visual del inventario activo y scores del Core. El frontend solo muestra — el Core decide.</span></p>
+              <div class="kpi-row" id="kpi-row">
+                <div class="kpi-card"><div class="kpi-label" data-i18n="kpi.total">TOTAL DE ACTIVOS</div><div class="kpi-val" id="kpi-total">—</div></div>
+                <div class="kpi-card"><div class="kpi-label" data-i18n="kpi.critical">CRÍTICOS</div><div class="kpi-val" id="kpi-critical">—</div></div>
+                <div class="kpi-card"><div class="kpi-label" data-i18n="kpi.attention">ALTA + CRÍTICA</div><div class="kpi-val" id="kpi-attention">—</div></div>
+                <div class="kpi-card"><div class="kpi-label" data-i18n="kpi.toprisk">MAYOR RIESGO</div><div class="kpi-val kpi-sm" id="kpi-toprisk">—</div></div>
+              </div>
+              <div class="findings-grid">
+                <div class="findings-card" id="findings-summary">
+                  <h4 data-i18n="findings.what">¿Qué encontramos?</h4>
+                  <p id="findings-summary-body" class="muted" data-i18n="findings.empty">Sube un inventario…</p>
+                </div>
+                <div class="findings-card" id="findings-start">
+                  <h4 data-i18n="findings.start">¿Por dónde empiezo?</h4>
+                  <ol id="findings-start-body" class="start-list">
+                    <li data-i18n="findings.start.1">Revisa los activos críticos.</li>
+                    <li data-i18n="findings.start.2">Revisa los sistemas con mayor riesgo del Core.</li>
+                    <li data-i18n="findings.start.3">Revisa las dependencias centrales.</li>
+                    <li data-i18n="findings.start.4">Revisa elementos con información incompleta.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+            <div id="charts-empty" class="empty-state hidden"><strong data-i18n="chart.nodata.short">Todavía no hay datos para mostrar</strong><p data-i18n="chart.nodata.need">Sube un inventario para comenzar el análisis.</p></div>
+            <div id="charts-root" class="charts-grid"></div>
+          </div>
+          <div class="panel">
+            <h3 data-i18n="report.title">Informe ejecutivo</h3>
+            <p class="muted"><span data-i18n="report.sub">Resumen conciso construido solo con salidas del Core y el último stress test. Sin métricas inventadas.</span></p>
+            <button class="btn secondary" id="ov-report" data-i18n="report.refresh">Actualizar informe ejecutivo</button>
+            <pre id="ov-report-out" class="code-block" data-i18n="report.empty">No disponible hasta cargar un inventario.</pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- INVENTORY -->
+      <section id="view-inventory" class="view">
+        <div class="section-help">
+          <strong data-i18n="page.inventory">Inventario</strong> — <span data-i18n="page.inventory.sub">Activos que CryptoRisk identificó en el documento.</span>
+          <button type="button" class="help-btn" data-help="inventory" data-i18n="btn.whatsthis">¿Qué es esto?</button>
+        </div>
+        <div class="panel">
+          <div class="cta-row">
+            <label class="btn primary file-btn"><span data-i18n="btn.upload">Upload inventory</span><input type="file" id="inv-upload" accept=".csv,.xlsx,.xls,.docx,.pdf,.txt,text/csv,application/pdf,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain" hidden /></label>
+            <button class="btn secondary" id="inv-demo" data-i18n="btn.demo">Use Demo Dataset</button>
+            <a class="btn ghost" href="/api/inventory/template.csv" data-i18n="btn.template">Download template</a>
+            <button class="btn danger" id="inv-clear" data-i18n="btn.clear">Clear inventory</button>
+          </div>
+          <p class="msg" id="inv-msg"></p>
+          <input id="inv-search" class="search" data-i18n-placeholder="inv.search.ph" placeholder="Filtrar activos…" style="margin:0.5rem 0;max-width:320px" />
+          <p id="inv-meta" class="muted" data-i18n="inv.meta.empty">NO INVENTORY LOADED · 0 assets</p>
+          <div class="table-wrap">
+            <table id="inv-table">
+              <thead>
+                <tr>
+                  <th data-i18n="th.asset">Asset</th>
+                  <th data-i18n="th.algorithm">Algorithm</th>
+                  <th data-i18n="th.criticality">Criticality</th>
+                  <th data-i18n="th.exposed">Exposure</th>
+                  <th data-i18n="th.status">Status</th>
+                  <th data-i18n="th.risk">Risk</th>
+                  <th data-i18n="th.deps">Dependencies</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- RISK -->
+      <section id="view-risk" class="view">
+        <div class="section-help">
+          <strong data-i18n="page.risk">Riesgo</strong> — <span data-i18n="page.risk.sub">Dónde se concentra la mayor exposición según el Core (0–100).</span>
+          <button type="button" class="help-btn" data-help="risk" data-i18n="btn.whatsthis">¿Qué es esto?</button>
+        </div>
+        <div class="panel">
+          <p id="risk-empty" class="empty-state"><strong data-i18n="empty.risk">No hay datos de riesgo</strong><p data-i18n="empty.risk.hint">Carga un inventario primero.</p></p>
+          <div class="table-wrap">
+            <table id="risk-table">
+              <thead>
+                <tr><th data-i18n="th.asset">Asset</th><th data-i18n="th.name">Description</th><th data-i18n="th.risk">Risk</th><th data-i18n="th.algorithm">Algorithm</th><th data-i18n="th.criticality">Criticality</th><th data-i18n="th.exposed">Exposure</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <p class="hint" id="risk-disclaimer"></p>
+          <div id="risk-charts" class="charts-grid" style="margin-top:1rem"></div>
+        </div>
+      </section>
+
+      <!-- DEPENDENCIES -->
+      <section id="view-dependencies" class="view">
+        <div class="section-help">
+          <strong data-i18n="page.dependencies">Dependencias</strong> — <span data-i18n="page.dependencies.sub">Qué sistemas dependen de otros y posibles puntos centrales.</span>
+          <button type="button" class="help-btn" data-help="dependencies" data-i18n="btn.whatsthis">¿Qué es esto?</button>
+        </div>
+        <div class="panel">
+          <div id="dep-charts" class="charts-grid"></div>
+          <pre id="dep-out" class="code-block" data-i18n="deps.load">Carga un inventario para ver las relaciones de dependencia.</pre>
+        </div>
+      </section>
+
+      <!-- DECISION -->
+      <section id="view-decision" class="view">
+        <div class="section-help">
+          <strong data-i18n="page.decision">Decisión</strong> — <span data-i18n="page.decision.sub">prioridades y stress test según el Core a partir de la evidencia disponible.</span>
+          <button type="button" class="help-btn" data-help="decision" data-i18n="btn.whatsthis">¿Qué es esto?</button>
+        </div>
+        <div class="banner-core" data-i18n="dec.banner">CORE DECIDES · AI EXPLAINS (authority NONE)</div>
+        <div class="panel">
+          <h3 data-i18n="dec.workspace">Espacio de decisión</h3>
+          <p class="muted" data-i18n="dec.what_to_do">Qué hacer: selecciona un activo (o introduce una decisión manual), opcionalmente activa la explicación de IA y ejecuta la prueba de estrés.</p>
+          <div class="form-row">
+            <label class="block-label"><span data-i18n="dec.asset">Activo</span>
+              <select id="dec-asset" class="search"></select>
+            </label>
+            <label class="block-label"><span data-i18n="dec.text">Texto de decisión (opcional)</span>
+              <input id="dec-text" class="search" data-i18n-placeholder="dec.text.ph" placeholder="p. ej. migrar NEXUS-PAYMENT-API" />
+            </label>
+            <label class="block-label"><span data-i18n="dec.ai_mode">Modo de IA</span>
+              <select id="dec-ai" class="search">
+                <option value="off" data-i18n="dec.ai.off">OFF — solo Core</option>
+                <option value="on" data-i18n="dec.ai.on">ON — explicar resultado del Core</option>
+                <option value="adversarial" data-i18n="dec.ai.adv">Adversarial — demostrar que la IA no puede modificar la decisión</option>
+              </select>
+            </label>
+            <button class="btn primary" id="dec-run" data-i18n="dec.run">Ejecutar prueba de estrés</button>
+            <button class="btn secondary" id="dec-compare" data-i18n="dec.compare">Comparar IA DESACTIVADA / ACTIVADA / adversarial</button>
+          </div>
+          <p class="msg" id="dec-msg"></p>
+        </div>
+        <div id="decision-charts" class="charts-grid"></div>
+        <div class="grid-2">
+          <div class="panel core-panel">
+            <div class="panel-tag" data-i18n="dec.core.tag">DECISIÓN DEL CORE · AUTORIDAD ABSOLUTA</div>
+            <div id="core-out" class="empty-state"><strong data-i18n="empty.decision">Aún no hay decisión</strong><p data-i18n="empty.decision.hint">Selecciona un activo y ejecuta un stress test.</p></div>
+          </div>
+          <div class="panel ai-panel">
+            <div class="panel-tag" data-i18n="dec.ai.tag">EXPLICACIÓN DE IA · AUTORIDAD NINGUNA</div>
+            <div id="ai-provider-badge" class="badge-neutral" data-i18n="provider.empty">Proveedor: —</div>
+            <div id="ai-out" class="empty-state"><strong data-i18n="empty.ai">Aún no hay explicación</strong><p data-i18n="empty.ai.hint">Activa el modo IA después de una decisión del Core.</p></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3 data-i18n="dec.boundary">Verificación del límite de la IA</h3>
+          <div id="compare-out" class="muted" data-i18n="dec.boundary.hint">Ejecuta la comparación para verificar que los resultados del Core permanezcan idénticos con la IA desactivada, activada y en modo adversarial.</div>
+        </div>
+      </section>
+
+      <!-- AUDIT -->
+      <section id="view-audit" class="view">
+        <div class="section-help">
+          <strong data-i18n="page.audit">Auditoría</strong> — <span data-i18n="page.audit.sub">Evidencia detrás de cada resultado. La IA explica; no decide.</span>
+          <button type="button" class="help-btn" data-help="audit" data-i18n="btn.whatsthis">¿Qué es esto?</button>
+        </div>
+        <div id="audit-out" class="empty-state"><strong data-i18n="empty.audit.title">Aún no hay eventos de auditoría</strong><p data-i18n="empty.audit.hint">Ejecuta un stress test en Decisión para producir una traza del Core.</p></div>
+      </section>
+</main>
+  </div>
+
+  <!-- Tutorial modal -->
+    <div id="tutorial-modal" class="modal hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <header class="modal-head">
+        <h2 data-i18n="btn.tutorial">How to use CryptoRisk</h2>
+        <button type="button" class="btn ghost" id="tutorial-close" aria-label="Close" data-i18n="btn.close">Close</button>
+      </header>
+      <div class="t-progress"><span id="tutorial-progress">Step 1 of 7</span></div>
+      <div id="tutorial-pane" class="tutorial-pane"></div>
+      <div class="tutorial-nav">
+        <button type="button" class="btn secondary" id="tutorial-prev" data-i18n="btn.prev">Previous</button>
+        <button type="button" class="btn primary" id="tutorial-next" data-i18n="btn.next">Next</button>
+      </div>
+      <p class="banner-core"><span data-i18n="auth.core">CORE</span> <span data-i18n="auth.decides">DECIDES</span> · <span data-i18n="auth.ai">AI</span> <span data-i18n="auth.explains">EXPLAINS</span> · <span data-i18n="auth.audit">AUDIT</span> <span data-i18n="auth.proves">PROVES</span></p>
+    </div>
+  </div>
+
+  <div id="help-popover" class="help-popover hidden"></div>
+  <script src="/static/i18n.js?v=global-i18n-1"></script>
+  <script src="/static/app.js?v=global-i18n-1"></script>
+</body>
+</html>

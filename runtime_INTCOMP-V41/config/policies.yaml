@@ -1,0 +1,199 @@
+# INTCOMP CryptoRisk — Policy Catalog (V4)
+# Fuente de verdad declarativa para el Policy Engine.
+# La lógica de evaluación permanece en Python; este archivo define
+# metadatos, severidad y efecto de cada política.
+#
+# Campos:
+#   policy_id, name, description, category, severity,
+#   evidence_required, decision_effect, human_explanation
+#   enabled (opcional, default true)
+#   thresholds (opcional, solo políticas de señal)
+
+version: "4.0.0"
+methodology: INTCOMP
+
+# Umbrales globales usados por políticas de señal (RISK_SIGNAL)
+thresholds:
+  quantum_exposure_high: 70
+  risk_score_high: 70
+  strategic_impact_high: 60
+  agility_low: 40
+
+policies:
+  - policy_id: P001
+    name: Dependency Cycle
+    description: >
+      Detecta ciclos de dependencia que involucran el activo o sus prerequisitos.
+    category: STRUCTURAL
+    severity: CRITICAL
+    evidence_required:
+      - dependency_graph
+      - target_asset
+    decision_effect: CONFLICT
+    human_explanation: >
+      Existe un ciclo de dependencia. No hay secuencia de migración válida
+      hasta que el ciclo se resuelva.
+    enabled: true
+
+  - policy_id: P002
+    name: Unresolved Dependency (not_started)
+    description: >
+      Una dependencia directa está en estado not_started.
+    category: DEPENDENCY
+    severity: HIGH
+    evidence_required:
+      - dependencies
+      - migration_status
+    decision_effect: CONFLICT
+    human_explanation: >
+      Hay dependencias que aún no han iniciado migración. Migrar el activo
+      ahora violaría el orden de dependencias.
+    enabled: true
+
+  - policy_id: P003
+    name: Missing Dependency Evidence
+    description: >
+      Una dependencia referenciada no existe en el inventario.
+    category: EVIDENCE
+    severity: CRITICAL
+    evidence_required:
+      - dependencies
+      - inventory
+    decision_effect: CONFLICT
+    human_explanation: >
+      El inventario referencia una dependencia que no existe. La evidencia
+      es incompleta; no se puede validar el orden de migración.
+    enabled: true
+
+  - policy_id: P004
+    name: Target Already Migrated
+    description: >
+      El activo objetivo ya está en estado migrated.
+    category: MIGRATION_STATUS
+    severity: HIGH
+    evidence_required:
+      - migration_status
+    decision_effect: CONFLICT
+    human_explanation: >
+      El activo ya fue migrado. Iniciar otra migración produciría trabajo
+      duplicado o inconsistencias de estado.
+    enabled: true
+
+  - policy_id: P005
+    name: Dependency Planned
+    description: >
+      Una dependencia directa está en estado planned.
+    category: DEPENDENCY
+    severity: MEDIUM
+    evidence_required:
+      - dependencies
+      - migration_status
+    decision_effect: WARNING
+    human_explanation: >
+      Existe planificación para la dependencia, pero aún no se ha ejecutado.
+      Coordinar antes de migrar el activo dependiente.
+    enabled: true
+
+  - policy_id: P006
+    name: Dependency In Progress
+    description: >
+      Una dependencia directa está en estado in_progress.
+    category: DEPENDENCY
+    severity: MEDIUM
+    evidence_required:
+      - dependencies
+      - migration_status
+    decision_effect: WARNING
+    human_explanation: >
+      La dependencia ya tiene un proceso de migración en curso. Evitar
+      trabajo duplicado; coordinar con el equipo responsable.
+    enabled: true
+
+  - policy_id: P007
+    name: Target In Progress
+    description: >
+      El activo objetivo ya está in_progress.
+    category: MIGRATION_STATUS
+    severity: MEDIUM
+    evidence_required:
+      - migration_status
+    decision_effect: WARNING
+    human_explanation: >
+      El activo ya tiene migración en curso. No iniciar un proceso duplicado.
+    enabled: true
+
+  - policy_id: P008
+    name: Higher Priority Prerequisite Pending
+    description: >
+      Una dependencia tiene Migration Priority mayor y aún no está migrada.
+    category: RISK_SIGNAL
+    severity: LOW
+    evidence_required:
+      - dependencies
+      - migration_priority
+      - migration_status
+    decision_effect: WARNING
+    human_explanation: >
+      Hay prerequisitos con mayor prioridad de migración aún pendientes.
+      Considerar el orden estratégico antes de proceder.
+    enabled: true
+
+  - policy_id: P009
+    name: High Quantum Exposure Signal
+    description: >
+      Quantum Exposure del activo es alto (heurístico).
+    category: RISK_SIGNAL
+    severity: LOW
+    evidence_required:
+      - quantum_exposure
+    decision_effect: WARNING
+    human_explanation: >
+      Indicador heurístico de exposición cuántica alto. No es una probabilidad
+      de ataque; priorizar revisión del algoritmo y lifetime de datos.
+    enabled: true
+    threshold_key: quantum_exposure_high
+
+  - policy_id: P010
+    name: High Risk Score Signal
+    description: >
+      Risk Score compuesto del activo es alto (heurístico).
+    category: RISK_SIGNAL
+    severity: LOW
+    evidence_required:
+      - risk_score
+    decision_effect: WARNING
+    human_explanation: >
+      Indicador heurístico de riesgo compuesto alto. Usar como señal de
+      priorización, no como predicción de compromiso.
+    enabled: true
+    threshold_key: risk_score_high
+
+  - policy_id: P011
+    name: High Strategic Impact Signal
+    description: >
+      Strategic Impact del activo es alto (heurístico).
+    category: RISK_SIGNAL
+    severity: LOW
+    evidence_required:
+      - strategic_impact
+    decision_effect: WARNING
+    human_explanation: >
+      El activo tiene alto impacto estratégico. Coordinar la migración con
+      stakeholders de negocio.
+    enabled: true
+    threshold_key: strategic_impact_high
+
+  - policy_id: P012
+    name: Low Crypto Agility Signal
+    description: >
+      Crypto Agility Estimate bajo (heurístico).
+    category: RISK_SIGNAL
+    severity: LOW
+    evidence_required:
+      - agility_estimate
+    decision_effect: WARNING
+    human_explanation: >
+      Estimación heurística de agilidad criptográfica baja. El cambio de
+      algoritmo puede requerir más esfuerzo de ingeniería.
+    enabled: true
+    threshold_key: agility_low

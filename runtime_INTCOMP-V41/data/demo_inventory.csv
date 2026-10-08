@@ -1,0 +1,20 @@
+asset_id,name,algorithm,key_size,protocol,criticality,internet_exposed,data_lifetime_years,dependencies,migration_status
+cert-infra-01,Certificate Infrastructure,RSA,2048,TLS 1.2,critical,false,15,,not_started
+identity-svc-01,Identity Service,ECDSA,256,TLS 1.3,critical,true,10,cert-infra-01,planned
+payment-api-01,Payment API,RSA,2048,TLS 1.2,critical,true,7,identity-svc-01;cert-infra-01,not_started
+legacy-billing-01,Legacy Billing System,3DES,168,TLS 1.0,high,false,10,payment-api-01,not_started
+partner-gateway-01,Partner Integration Gateway,RSA,1024,TLS 1.0,high,true,5,identity-svc-01,in_progress
+internal-hr-01,Internal HR Portal,AES,256,TLS 1.3,medium,false,8,identity-svc-01,not_started
+notification-svc-01,Notification Service,AES,128,TLS 1.2,low,true,2,identity-svc-01,migrated
+analytics-store-01,Analytics Data Store,SHA-1,0,TLS 1.1,medium,false,3,,not_started
+mobile-auth-01,Mobile App Auth,ECDH,256,TLS 1.3,high,true,5,identity-svc-01,planned
+vpn-gateway-01,Corporate VPN Gateway,DH,2048,IPsec,high,true,6,cert-infra-01,not_started
+archive-storage-01,Cold Archive Storage,AES,256,TLS 1.2,low,false,20,,not_started
+legacy-erp-01,Legacy ERP Connector,DES,56,Proprietary,medium,false,4,legacy-billing-01,not_started
+public-website-01,Public Marketing Website,RSA,2048,TLS 1.3,low,true,1,,migrated
+search-index-01,Internal Search Index,SHA-256,0,TLS 1.3,low,false,2,internal-hr-01,not_started
+reporting-api-01,Reporting API,AES,256,TLS 1.3,medium,false,5,analytics-store-01;identity-svc-01,planned
+batch-jobs-01,Nightly Batch Jobs,3DES,168,Proprietary,low,false,8,legacy-erp-01;legacy-billing-01,not_started
+cycle-alpha-01,Cycle Alpha Service,RSA,2048,TLS 1.2,medium,false,5,cycle-beta-01,not_started
+cycle-beta-01,Cycle Beta Service,RSA,2048,TLS 1.2,medium,false,5,cycle-alpha-01,not_started
+secure-internal-01,Secure Internal Tool,AES,256,TLS 1.3,low,false,2,,not_started

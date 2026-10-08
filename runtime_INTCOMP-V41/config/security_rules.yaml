@@ -1,0 +1,60 @@
+# Política de reglas de seguridad personalizadas — INTCOMP CryptoRisk V3
+# Consumida por scripts/check_security_rules.py (gate de repo, no Sonar).
+
+version: 1
+
+forbidden_patterns:
+  - id: NO_EVAL
+    description: "Uso de eval() prohibido"
+    regex: '\beval\s*\('
+    severity: critical
+    paths: ["app/", "core/", "crypto/", "ai/"]
+
+  - id: NO_EXEC
+    description: "Uso de exec() prohibido"
+    regex: '\bexec\s*\('
+    severity: critical
+    paths: ["app/", "core/", "crypto/", "ai/"]
+
+  - id: NO_PICKLE_LOAD
+    description: "pickle.load/loads prohibido en código de app"
+    regex: '\bpickle\.(loads?|Unpickler)\b'
+    severity: high
+    paths: ["app/", "core/", "crypto/", "ai/"]
+
+  - id: NO_VERIFY_FALSE
+    description: "requests verify=False deshabilita TLS verification"
+    regex: 'verify\s*=\s*False'
+    severity: high
+    paths: ["app/", "core/", "crypto/", "ai/"]
+
+  - id: NO_HARDCODED_NVAPI
+    description: "API key NVIDIA hardcodeada"
+    regex: 'nvapi-[A-Za-z0-9_-]{10,}'
+    severity: critical
+    paths: ["app/", "core/", "crypto/", "ai/", "scripts/"]
+
+  - id: NO_SHELL_TRUE
+    description: "subprocess con shell=True"
+    regex: 'shell\s*=\s*True'
+    severity: high
+    paths: ["app/", "core/", "crypto/", "ai/"]
+
+  - id: NO_YAML_UNSAFE_LOAD
+    description: "yaml.load sin SafeLoader"
+    regex: 'yaml\.load\s*\('
+    severity: high
+    paths: ["app/", "core/", "crypto/", "ai/"]
+
+required_files:
+  - .gitignore
+  - .dockerignore
+  - docs/security.md
+  - SECURITY.md
+
+gitignore_must_contain:
+  - ".env"
+  - "secrets/"
+
+dockerfile_must_contain:
+  - "USER"

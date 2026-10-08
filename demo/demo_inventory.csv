@@ -1,0 +1,19 @@
+asset_id,name,algorithm,key_size,protocol,criticality,internet_exposed,data_lifetime_years,dependencies,migration_status
+demo-pki,Demo Root CA,RSA,4096,TLS 1.2,critical,false,20,,not_started
+demo-pki-int,Demo Issuing CA,RSA,3072,TLS 1.2,critical,false,15,demo-pki,not_started
+demo-hsm,Demo HSM,AES,256,IPsec,critical,false,15,,migrated
+demo-identity,Identity Service,ECDSA,256,TLS 1.3,critical,true,12,demo-pki-int,not_started
+demo-sso,Enterprise SSO,RSA,2048,TLS 1.2,critical,true,10,demo-identity;demo-pki-int,not_started
+demo-payment,Payment Gateway,RSA,2048,TLS 1.2,critical,true,10,demo-sso;demo-pki-int,not_started
+demo-api,Public API Edge,RSA,2048,TLS 1.2,high,true,6,demo-sso;demo-pki-int,not_started
+demo-crm,Customer CRM,RSA,2048,TLS 1.2,high,true,8,demo-sso,not_started
+demo-legacy-ftp,Legacy Partner FTP,RSA,1024,TLS 1.0,high,true,10,,not_started
+demo-low-wiki,Internal Wiki,RSA,2048,TLS 1.2,low,true,2,demo-pki-int,not_started
+demo-cycle-a,Region Sync A,AES,256,TLS 1.2,medium,false,3,demo-cycle-b,not_started
+demo-cycle-b,Region Sync B,AES,256,TLS 1.2,medium,false,3,demo-cycle-a,not_started
+demo-ghost,EDI Bridge,3DES,168,TLS 1.0,high,true,12,demo-payment;demo-GHOST-MAINFRAME,not_started
+demo-migrated,Offsite Backup,AES,256,IPsec,critical,false,20,demo-hsm,migrated
+demo-pqc,PQC Pilot Endpoint,ML-KEM,0,TLS 1.3,medium,false,5,demo-hsm,migrated
+demo-unknown,Mystery Box,UNKNOWN_ALGO,0,Custom,medium,false,5,,not_started
+demo-msg,Event Bus,AES,256,TLS 1.2,high,false,5,demo-pki-int,not_started
+demo-portal,Customer Portal,RSA,2048,TLS 1.2,high,true,5,demo-sso;demo-crm,not_started

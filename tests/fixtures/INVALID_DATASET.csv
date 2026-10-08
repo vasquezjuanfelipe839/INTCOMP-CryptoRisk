@@ -1,0 +1,2 @@
+asset_id,name,algorithm,key_size,protocol,criticality,internet_exposed,data_lifetime_years,dependencies,migration_status
+bad_id_only_no_required_fields

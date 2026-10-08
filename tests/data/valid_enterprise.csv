@@ -1,0 +1,9 @@
+asset_id,name,algorithm,key_size,protocol,criticality,internet_exposed,data_lifetime_years,dependencies,migration_status
+pki,Root CA,RSA,4096,TLS 1.2,critical,false,20,,not_started
+identity,Identity Service,ECDSA,256,TLS 1.3,high,true,12,pki,not_started
+sso,SSO Gateway,ECDSA,256,TLS 1.3,high,true,10,identity,not_started
+payment,Payment API,RSA,2048,TLS 1.2,critical,true,15,sso,not_started
+api,Public API,RSA,2048,TLS 1.3,high,true,8,sso,not_started
+crm,CRM,AES,256,TLS 1.2,medium,false,7,identity,not_started
+database,Customer DB,AES,256,TLS 1.2,critical,false,20,payment,not_started
+legacy-ftp,Legacy FTP,RSA,1024,FTP,low,true,3,,not_started
