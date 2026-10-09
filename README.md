@@ -107,7 +107,7 @@ Bearer isolation, anti-score-injection, no Core decision from the client.
 |---|---|
 | Core package SHA-256 | `06f703f59549e3c5ed17eecaddf9ea0d4124518b53ca27d7c7f9155964101427` |
 | Core / evaluator / Case V0 | **Frozen** |
-| Tests | **34 passed** |
+| Tests | **58 passed** |
 
 See `RELEASE_MANIFEST.md`.
 
