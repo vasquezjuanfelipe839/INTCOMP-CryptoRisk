@@ -1,8 +1,8 @@
-# INTCOMP-CryptoRisk# INTCOMP CryptoRisk
+# INTCOMP CryptoRisk
 
 ![Python](https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-34%20reported-brightgreen)
+![Tests](https://img.shields.io/badge/tests-58%20passed-brightgreen)
 ![Status](https://img.shields.io/badge/release-Final%20Tournament-6f42c1)
 
 **Autor:** Juan Felipe Vásquez · INTCOMP
@@ -35,7 +35,7 @@ Browser → FastAPI → `runtime_INTCOMP-V41` Core. Frontend does not recalculat
 
 ## Install & run
 
-**Windows:** extract → double-click `START_INTCOMP.bat` → http://127.0.0.1:8000  
+**Windows:** open a terminal in the project folder and run `py -3 launcher.py` → http://127.0.0.1:8000  
 
 **Linux/macOS:**
 
@@ -44,12 +44,17 @@ python3 -m pip install -r requirements.txt
 python3 launcher.py
 ```
 
+The launcher also creates a local `.venv`, installs `requirements.txt` and starts the server. Use `--no-browser` to skip opening the browser and `--port` to change the port.
+
 ## Tests
 
 ```bash
-PYTHONPATH=runtime_INTCOMP-V41:.:backend python -m pytest tests/ -q
-# Expected: 34 passed
+python3 -m pip install pytest httpx
+PYTHONPATH=runtime_INTCOMP-V41:.:backend python3 -m pytest tests/ -q
+# Expected: 58 passed, 2 skipped
 ```
+
+On Windows (PowerShell): `$env:PYTHONPATH="runtime_INTCOMP-V41;.;backend"` and then `py -3 -m pytest tests/ -q`.
 
 ## Analysis flow
 
@@ -107,9 +112,7 @@ Bearer isolation, anti-score-injection, no Core decision from the client.
 |---|---|
 | Core package SHA-256 | `06f703f59549e3c5ed17eecaddf9ea0d4124518b53ca27d7c7f9155964101427` |
 | Core / evaluator / Case V0 | **Frozen** |
-| Tests | **58 passed** |
-
-See `RELEASE_MANIFEST.md`.
+| Tests | **58 passed, 2 skipped** |
 
 ## Known limitations
 
